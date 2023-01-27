@@ -8,27 +8,27 @@ Hy-MMSBM <br/>
 </p>
 
 <p align="center">
-<a href="https://github.com/nickruggeri/Hy-MMSBM/blob/main/LICENSE">
+<a href="https://github.com/nickruggeri/Hy-MMSBM/blob/main/LICENSE" target="_blank">
 <img alt="License: MIT" src="https://img.shields.io/github/license/nickruggeri/Hy-MMSBM">
 </a>
 
-<a href="https://www.python.org/">
+<a href="https://www.python.org/" target="_blank">
 <img alt="Made with Python" src="https://img.shields.io/badge/made%20with-python-1f425f.svg">
 </a>
 
-<a href="https://github.com/psf/black">
+<a href="https://github.com/psf/black" target="_blank">
 <img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg">
 </a>
 
-<a href="">
-<img alt="ARXIV: TODO" src="https://img.shields.io/badge/arXiv-INFERENCE%20ARXIV%20TODO SAMPLING-red.svg">
+<a href="https://arxiv.org/abs/2301.11226" target="_blank">
+<img alt="ARXIV: 2301.11226" src="https://img.shields.io/badge/arXiv-2301.11226-red.svg">
 </a>
 
-<a href="https://arxiv.org/abs/2212.08593">
+<a href="https://arxiv.org/abs/2212.08593" target="_blank">
 <img alt="ARXIV: 2212.08593" src="https://img.shields.io/badge/arXiv-2212.08593-red.svg">
 </a>
 
-<a href="https://www.treedom.net/en/user/nicolo-ruggeri-7568/trees/V36-Y75D">
+<a href="https://www.treedom.net/en/user/nicolo-ruggeri-7568/trees/V36-Y75D" target="_blank">
 <img alt="Treedom" src="https://img.shields.io/badge/CO2%20compensation%20-Treedom%20%F0%9F%8C%B4-brightgreen">
 </a>
 
@@ -41,14 +41,14 @@ This repository contains the implementation of the <i>Hy-MMSBM</i> model present
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 Nicolò Ruggeri, Martina Contisciani, Federico Battiston and Caterina De Bacco<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-[<a href="https://www.google.com/">arXiv TODO ADD</a>]
+[<a href="https://arxiv.org/abs/2301.11226" target="_blank">ArXiv</a>]
         
 &nbsp;&nbsp; 
 [2] <i>A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking</i><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Nicolò Ruggeri, Federico Battiston and Caterina De Bacco <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[<a href="https://arxiv.org/abs/2212.08593">arXiv</a>]
+[<a href="https://arxiv.org/abs/2212.08593" target="_blank">ArXiv</a>]
 
 
 Respectively, these works present efficient inference and sampling methods based on 
@@ -95,8 +95,8 @@ __2. Text format__<br/>
 Alternatively, a hypergraph can be provided as input via two *.txt* files,
 containing the list of hyperedges, and the relative weights. 
 This allows the user to provide arbitrary datasets as inputs.
-We provide examples for the format expected in [./data/examples/justice_dataset/hyperedges.txt](https://github.com/nickruggeri/Hy-MMSBM-dev/blob/main/data/examples/justice_dataset/hyperedges.txt)
-and [./data/examples/justice_dataset/weights.txt](https://github.com/nickruggeri/Hy-MMSBM-dev/blob/main/data/examples/justice_dataset/weights.txt). 
+We provide examples for the format expected in [./data/examples/justice_dataset/hyperedges.txt](./data/examples/justice_dataset/hyperedges.txt)
+and [./data/examples/justice_dataset/weights.txt](./data/examples/justice_dataset/weights.txt). 
 To perform inference on a dataset specified in text format, provide the path to the two 
 files as 
 ```python
@@ -119,7 +119,7 @@ python main_inference.py
 --out_dir ./out_inference/justice 
 --pickle_file ./data/examples/justice_dataset/justice.pkl
 ```
-Similar to the text format, this allows to provide arbitrary hypergraphs as input.
+Similarly to the text format, this allows to provide arbitrary hypergraphs as input.
 
 <h3>Additional options</h3>
 
@@ -163,7 +163,7 @@ node's degree) , size sequence (i.e. the count of hyperedges for any given size)
 These need to be stored in text files, the degree sequence via `numpy.savetxt`, and the 
 size sequence in a text file specifying, for every line, the size of the hyperedges and 
 the number of the hyperedges of such size. Examples for these formats are given in 
-[./data/examples](https://github.com/nickruggeri/Hy-MMSBM-dev/tree/main/data/examples) at `fixed_dimension_sequence_hard` and `justic_dataset`. <br/>
+[./data/examples](./data/examples) at `fixed_dimension_sequence_hard` and `justic_dataset`. <br/>
 The command line arguments are specified as follows:
 ```python
 python main_sampling.py 
@@ -204,8 +204,8 @@ rescale the model parameters to match the expected sequences with the input ones
 
 <h2>Data release</h2>
 
-All the preprocessed real datasets utilized in [1], as well as some of the synthetic 
-data generated for the experiments in [1, 2], are publicly available. <br/>
+All the preprocessed real datasets utilized in [1, 2], as well as some of the synthetic 
+data generated for various experiments, are publicly available. <br/>
 The data is stored and distributed via <a href="https://edmond.mpdl.mpg.de/">Edmond</a>, 
 the Open Research Data Repository of the Max Planck Society, and is available at the 
 following 
