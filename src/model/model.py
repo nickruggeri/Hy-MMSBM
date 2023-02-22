@@ -14,10 +14,10 @@ class HyMMSBM:
     """Implements the Hy-MMSBM probabilistic model from
 
     "Generalized inference of mesoscale structures in higher-order networks",
-    Ruggeri N., Battiston F., De Bacco C., and
+    Ruggeri N., Contisciani M., Battiston F., De Bacco C., and
 
     "A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking"
-    Ruggeri N., Contisciani M., Battiston F., De Bacco C.
+    Ruggeri N., Battiston F., De Bacco C.
 
     The probabilistic model assumes the formation of hyperedges according to a Poisson
     distribution. The Poisson distribution for every single hyperedge is determined by a
