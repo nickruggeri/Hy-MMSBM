@@ -1,7 +1,6 @@
-from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
-
 import numpy as np
 from scipy import sparse, stats
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple, Union
 
 from src.data.data_conversion import hye_list_to_binary_incidence
 from src.data.representation.ahye_hypergraph import AHyeHypergraph
@@ -34,6 +33,7 @@ class HyMMSBM:
         max_hye_size: Optional[int] = None,
         u_prior: Union[float, np.ndarray] = 0.0,
         w_prior: Union[float, np.ndarray] = 1.0,
+        seed: Optional[int] = None,
     ):
         """Initialize the probabilistic model.
         The parameters u and w can be provided as input, either both, only one or none.
@@ -70,6 +70,7 @@ class HyMMSBM:
             Similar to the exponential rate for u. If an array, it needs to be a
             symmetric matrix with same shape as w.
             To avoid specifying a prior for w, set w_prior to the 0. float value.
+        seed: random seed.
         """
         super().__init__()
 
@@ -98,6 +99,9 @@ class HyMMSBM:
         self.trained: bool = False  # The model has been trained or not.
         self.training_iter: Optional[int] = None  # Number of EM iterations performed.
         self.tolerance_reached: bool = False  # Stopping criterion satisfied.
+
+        # Random number generator.
+        self._rng: np.random.Generator = np.random.default_rng(seed)
 
     @property
     def N(self) -> Union[None, int]:
@@ -227,6 +231,7 @@ class HyMMSBM:
         avg_deg: Optional[float] = None,
         allow_rescaling: bool = True,
         initial_config: Optional[List[Set[int]]] = None,
+        seed: Optional[int] = None,
         **kwargs: Any,
     ) -> Iterable[Tuple[AHyeHypergraph, HyMMSBMSampler]]:
         """Approximately sample a hypergraph from the generative model, as presented in
@@ -253,6 +258,7 @@ class HyMMSBM:
             are preserved.
         allow_rescaling: if to allow the rescaling of the model's parameters in place
             This adjusts for the sampling constraints, e.g. average degree.
+        seed: random seed.
         kwargs: keyword arguments to be passed to the HyMMSBMSampler.
 
         Returns
@@ -263,7 +269,7 @@ class HyMMSBM:
         To sample conditioning on different sequences, a new call to the function is
         required. Together with the hypergraphs, the MCMC sampler instance is yield.
         """
-        mcmc_sampler = HyMMSBMSampler(model=self, **kwargs)
+        mcmc_sampler = HyMMSBMSampler(model=self, seed=seed, **kwargs)
         if initial_config is None:
             samples = mcmc_sampler.sample(deg_seq, dim_seq, avg_deg, allow_rescaling)
         else:
@@ -283,7 +289,7 @@ class HyMMSBM:
             poisson_mean = np.exp(log_poisson)
             # Weights can't be zero, remedy numerical underflow by clipping.
             poisson_mean = np.clip(poisson_mean, a_min=1.0e-10, a_max=None)
-            weights = sample_truncated_poisson(poisson_mean)
+            weights = sample_truncated_poisson(poisson_mean, rng=self._rng)
 
             # Although theoretically impossible, sometimes the sampled weights are
             # zero due to numerical instabilities.
@@ -462,7 +468,9 @@ class HyMMSBM:
         if expected:
             return mean
 
-        return sample_discretized_positive_gaussian(loc=mean, scale=np.sqrt(mean))
+        return sample_discretized_positive_gaussian(
+            loc=mean, scale=np.sqrt(mean), rng=self._rng
+        )
 
     def dimension_sequence(
         self,
@@ -500,7 +508,9 @@ class HyMMSBM:
                 dim: mean_count for dim, mean_count in zip(dims, mean) if mean_count > 0
             }
 
-        hye_count = sample_discretized_positive_gaussian(loc=mean, scale=np.sqrt(mean))
+        hye_count = sample_discretized_positive_gaussian(
+            loc=mean, scale=np.sqrt(mean), rng=self._rng
+        )
         dim_seq = {dim: count for dim, count in zip(dims, hye_count) if count > 0}
         return dim_seq
 
@@ -531,7 +541,7 @@ class HyMMSBM:
         This is returned as a square upper-triangular matrix.
         """
         poisson_lambda = bf(self.u, self.u, self.w) / np.exp(self.log_kappa(2))
-        adjacency = np.random.poisson(poisson_lambda) > 0
+        adjacency = self._rng.poisson(poisson_lambda) > 0
         return np.triu(adjacency, 1)
 
     def _w_update(
@@ -722,7 +732,7 @@ class HyMMSBM:
 
     def _init_w(self) -> None:
         K = self.K
-        rng = np.random.default_rng()
+        rng = self._rng
 
         if isinstance(self.w_prior, float) and self.w_prior == 0.0:
             w = rng.random((K, K))
@@ -749,7 +759,7 @@ class HyMMSBM:
     def _init_u(self, hypergraph: Hypergraph) -> None:
         N = hypergraph.N
         K = self.K
-        rng = np.random.default_rng()
+        rng = self._rng
 
         if isinstance(self.u_prior, float) and self.u_prior == 0.0:
             self.u = rng.random((N, K))
@@ -793,28 +803,28 @@ def log_binomial(n: int, k: int) -> float:
     return np.log(np.arange(n - k + 1, n + 1)).sum() - np.log(np.arange(1, k + 1)).sum()
 
 
-def sample_discretized_positive_gaussian(loc: np.array, scale: np.array) -> np.ndarray:
+def sample_discretized_positive_gaussian(
+    loc: np.array, scale: np.array, rng: Optional[np.random.Generator] = None
+) -> np.ndarray:
     """Sample a Gaussian, then round its samples to the nearest integer
     and clip them to be greater than 0.
     """
-    samples = np.random.normal(loc=loc, scale=scale)
+    rng = rng if rng is not None else np.random.default_rng()
+    samples = rng.normal(loc=loc, scale=scale)
     samples = np.rint(samples)
     samples[samples < 0] = 0.0
     return samples.astype(int)
 
 
 def sample_truncated_poisson(
-    lambd: Union[float, int, np.ndarray]
+    lambd: Union[float, int, np.ndarray], rng: Optional[np.random.Generator] = None
 ) -> Union[float, np.ndarray]:
     """Sample a truncated Poisson.
     If X is a Poisson random variable with parameter lambda, the relative
     truncated Poisson variable Y with same parameter lambda is defined as
     Y = X | X > 0.
     """
-    u = (
-        np.random.rand(1)
-        if not isinstance(lambd, np.ndarray)
-        else np.random.rand(*lambd.shape)
-    )
+    rng = rng if rng is not None else np.random.default_rng()
+    u = rng.random(1) if not isinstance(lambd, np.ndarray) else rng.random(*lambd.shape)
     p = u + (1 - u) * np.exp(-lambd)
     return stats.poisson.ppf(p, lambd)

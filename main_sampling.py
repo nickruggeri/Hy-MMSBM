@@ -1,10 +1,9 @@
+import numpy as np
 import pickle as pkl
 import random
+import yaml
 from argparse import ArgumentParser
 from pathlib import Path
-
-import numpy as np
-import yaml
 
 from src.argparse_types import bool_type, int_or_none
 from src.data.data_io import load_data
@@ -107,10 +106,6 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    # Random seed
-    np.random.seed(args.seed)
-    random.seed(args.seed)
-
     # Load input parameters.
     w = np.loadtxt(args.w)
     u = np.loadtxt(args.u)
@@ -168,7 +163,9 @@ if __name__ == "__main__":
         initial_config = None
 
     # Sample.
-    model = HyMMSBM(K, u, w, assortative=None, max_hye_size=max_hye_size)
+    model = HyMMSBM(
+        K, u, w, assortative=None, max_hye_size=max_hye_size, seed=args.seed
+    )
     samples = model.sample(
         deg_seq=deg_seq,
         dim_seq=dim_seq,

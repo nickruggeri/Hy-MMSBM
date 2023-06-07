@@ -14,9 +14,8 @@ the binary (or unweighted) hypergraph. The extraction of the Poisson weights is 
 managed by the HyMMSBMSampler directly, but by the probabilistic model instance HyMMSBM.
 """
 import logging
-from typing import Dict, Iterator, List, Optional, Set, Tuple
-
 import numpy as np
+from typing import Dict, Iterator, List, Optional, Set, Tuple
 
 from src.data.data_conversion import hye_list_to_binary_incidence
 
@@ -35,6 +34,7 @@ class HyMMSBMSampler:
         exact_dyadic_sampling: bool = True,
         burn_in_steps: int = 1000,
         intermediate_steps: int = 1000,
+        seed: Optional[int] = None,
     ) -> None:
         """Initialize the sampler instance.
         The sampler refers to an instance of the probabilistic model for model-related
@@ -53,6 +53,7 @@ class HyMMSBMSampler:
         burn_in_steps: number of burn-in steps for Metropolis-Hastings MCMC.
         intermediate_steps: number of steps in between returned samples for
             Metropolis-Hastings MCMC.
+        seed: random seed.
         """
         self.intermediate_steps = intermediate_steps
         self.burn_in_steps = burn_in_steps
@@ -66,6 +67,9 @@ class HyMMSBMSampler:
         self.reject_count: int = 0
 
         self.matching_sequences: Optional[bool] = None
+
+        # Random number generator.
+        self._rng: np.random.Generator = np.random.default_rng(seed)
 
     def sample(
         self,
@@ -226,7 +230,7 @@ class HyMMSBMSampler:
         Modify the input list of hyperedges in place.
         """
         # Select two random hyperedges.
-        idx1, idx2 = np.random.choice(len(hye_list), size=2, replace=False)
+        idx1, idx2 = self._rng.choice(len(hye_list), size=2, replace=False)
         hye1, hye2 = hye_list[idx1], hye_list[idx2]
 
         # Reshuffle hyperedges.
@@ -248,7 +252,7 @@ class HyMMSBMSampler:
 
         # Transition probability and accept-reject step.
         transition_prob = self._transition_prob(poisson_lambda, log_kappa)
-        if np.random.rand() < transition_prob:
+        if self._rng.random() < transition_prob:
             hye_list[idx1] = set(new_hye1)
             hye_list[idx2] = set(new_hye2)
             self.accept_count += 1
@@ -274,7 +278,7 @@ class HyMMSBMSampler:
         disjoint_union = (hye1 | hye2) - intersection
 
         new_hye1 = set(
-            np.random.choice(
+            self._rng.choice(
                 list(disjoint_union), size=len(hye1) - len(intersection), replace=False
             )
         )
@@ -447,7 +451,7 @@ class HyMMSBMSampler:
                     len(node_set) for deg, node_set in nodes_with_deg.items() if deg > 0
                 )
                 while available_nodes > 1:
-                    hye_size = np.random.randint(2, self.model.max_hye_size + 1)
+                    hye_size = self._rng.integers(2, self.model.max_hye_size + 1)
                     new_hye = self._extract_hye(
                         nodes_with_deg, hye_size, force_deg_seq, force_dim_seq
                     )
@@ -530,7 +534,7 @@ class HyMMSBMSampler:
                             "Ignoring the constraints on the degree sequence."
                         )
                     nodes_chosen[0] = set(
-                        np.random.choice(
+                        self._rng.choice(
                             list(nodes_with_deg[0]),
                             size=hye_size - n_nodes_sampled,
                             replace=False,
@@ -551,7 +555,7 @@ class HyMMSBMSampler:
             )
 
             nodes_chosen[deg] = set(
-                np.random.choice(
+                self._rng.choice(
                     list(nodes_with_deg[deg]),
                     size=n_nodes_to_sample,
                     replace=False,

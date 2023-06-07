@@ -1,12 +1,10 @@
 from __future__ import annotations
 
 import logging
-import random
-from argparse import ArgumentParser
-from pathlib import Path
-
 import numpy as np
 import yaml
+from argparse import ArgumentParser
+from pathlib import Path
 
 from src.argparse_types import bool_type, float_or_none, float_or_str, int_or_none
 from src.data.data_io import load_data
@@ -118,10 +116,6 @@ if __name__ == "__main__":
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
-    # Random seed
-    np.random.seed(args.seed)
-    random.seed(args.seed)
-
     # Load hypergraph
     hypergraph = load_data(
         args.real_dataset,
@@ -168,6 +162,7 @@ if __name__ == "__main__":
             max_hye_size=args.max_hye_size,
             u_prior=u_prior,
             w_prior=w_prior,
+            seed=args.seed + j if args.seed is not None else None,
         )
         model.fit(
             hypergraph,
