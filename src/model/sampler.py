@@ -22,7 +22,7 @@ from src.data.data_conversion import hye_list_to_binary_incidence
 
 class HyMMSBMSampler:
     """Sampler for the Hy-MMSBM model.
-    This class takes care of the approximate sampling routing described in
+    This class takes care of the approximate sampling routine described in
 
     "A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking"
     Ruggeri N., Contisciani M., Battiston F., De Bacco C.
