@@ -149,8 +149,8 @@ class HyMMSBM:
     ) -> None:
         """Perform Expectation-Maximization inference on a hypergraph, as presented  in
 
-         "Generalized inference of mesoscale structures in higher-order networks",
-        Ruggeri N., Battiston F., De Bacco C.,
+        "Generalized inference of mesoscale structures in higher-order networks",
+        Ruggeri N., Contisciani M., Battiston F., De Bacco C.
 
         The inference can be performed both on the affinity matrix w and the assignments
         u.
