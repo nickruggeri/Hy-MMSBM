@@ -259,8 +259,7 @@ class HyMMSBMSampler:
         else:
             self.reject_count += 1
 
-    @staticmethod
-    def pairwise_reshuffle(hye1: Set[int], hye2: Set[int]) -> Tuple[Set[int], Set[int]]:
+    def pairwise_reshuffle(self, hye1: Set[int], hye2: Set[int]) -> Tuple[Set[int], Set[int]]:
         """Given two hyperedges, perform the random reshuffling operation proposed in
         "Configuration Models of Random Hypergraphs", Chodrow 2020.
 
