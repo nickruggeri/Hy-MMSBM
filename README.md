@@ -44,7 +44,7 @@ Nicolò Ruggeri, Martina Contisciani, Federico Battiston and Caterina De Bacco<b
 [<a href="https://arxiv.org/abs/2301.11226" target="_blank">ArXiv</a>]
         
 &nbsp;&nbsp; 
-[2] <i>A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking</i><br/>
+[2] <i>A framework to generate hypergraphs with community structure</i><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Nicolò Ruggeri, Federico Battiston and Caterina De Bacco <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -58,8 +58,8 @@ in the form of the references above.
 
 <h2>Code installation</h2>
 
-Our code can be downloaded and used locally as-is. To install the necessary packages, 
-run the following command
+The code was developed utilizing <b>Python 3.9</b>, and can be downloaded and used locally as-is. <br>
+To install the necessary packages, run the following command
 
 `pip install -r requirements.txt`
 
@@ -215,6 +215,4 @@ Alternatively, it can be directly downloaded
 (approximately 1.7GB compressed, then uncompressed to 12.5GB), 
 by running the relative script as <br/> 
 `python download_data.py`
-
  
-
