@@ -1,7 +1,7 @@
 """MCMC sampler for the Hy-MMSBM model, described in
 
-"A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking"
-    Ruggeri N., Contisciani M., Battiston F., De Bacco C.
+"A framework to generate hypergraphs with community structure"
+Ruggeri N., Contisciani M., Battiston F., De Bacco C.
 
 Notice that the sampler is separate from the probabilistic model itself.
 In this view, the sampler only takes care of any sampling-related operation,
@@ -24,7 +24,7 @@ class HyMMSBMSampler:
     """Sampler for the Hy-MMSBM model.
     This class takes care of the approximate sampling routine described in
 
-    "A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking"
+    "A framework to generate hypergraphs with community structure"
     Ruggeri N., Contisciani M., Battiston F., De Bacco C.
     """
 
@@ -82,7 +82,7 @@ class HyMMSBMSampler:
         This is the main functionality of the sampler, and follows a different logic
         depending on the conditioning on various quantities, see
 
-        "A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking"
+        "A framework to generate hypergraphs with community structure"
         Ruggeri N., Contisciani M., Battiston F., De Bacco C.
 
         Possible quantities to condition on are degree sequence, dimension sequence and

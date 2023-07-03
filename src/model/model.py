@@ -12,10 +12,10 @@ from src.model.sampler import HyMMSBMSampler
 class HyMMSBM:
     """Implements the Hy-MMSBM probabilistic model from
 
-    "Generalized inference of mesoscale structures in higher-order networks",
+    "Community Detection in Large Hypergraphs",
     Ruggeri N., Contisciani M., Battiston F., De Bacco C., and
 
-    "A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking"
+    "A framework to generate hypergraphs with community structure"
     Ruggeri N., Battiston F., De Bacco C.
 
     The probabilistic model assumes the formation of hyperedges according to a Poisson
@@ -149,7 +149,7 @@ class HyMMSBM:
     ) -> None:
         """Perform Expectation-Maximization inference on a hypergraph, as presented  in
 
-        "Generalized inference of mesoscale structures in higher-order networks",
+        "Community Detection in Large Hypergraphs",
         Ruggeri N., Contisciani M., Battiston F., De Bacco C.
 
         The inference can be performed both on the affinity matrix w and the assignments
@@ -236,7 +236,7 @@ class HyMMSBM:
     ) -> Iterable[Tuple[AHyeHypergraph, HyMMSBMSampler]]:
         """Approximately sample a hypergraph from the generative model, as presented in
 
-        "A Principled, Flexible and Efficient Framework for Hypergraph Benchmarking"
+        "A framework to generate hypergraphs with community structure"
         Ruggeri N., Contisciani M., Battiston F., De Bacco C.
 
         Possibly, condition on a given degree sequence and/or dimension sequence,
