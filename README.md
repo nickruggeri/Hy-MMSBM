@@ -37,7 +37,7 @@ Hy-MMSBM <br/>
 This repository contains the implementation of the <i>Hy-MMSBM</i> model presented in 
 
 &nbsp;&nbsp; 
-[1] <i>Generalized Inference of Mesoscale Structures in Higher-order Networks</i><br/>
+[1] <i> Community Detection in Large Hypergraphs</i><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 Nicolò Ruggeri, Martina Contisciani, Federico Battiston and Caterina De Bacco<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
