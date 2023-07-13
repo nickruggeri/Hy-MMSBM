@@ -41,7 +41,11 @@ This repository contains the implementation of the <i>Hy-MMSBM</i> model present
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 Nicolò Ruggeri, Martina Contisciani, Federico Battiston and Caterina De Bacco<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-[<a href="https://arxiv.org/abs/2301.11226" target="_blank">ArXiv</a>]
+[
+        <a href="https://www.science.org/doi/10.1126/sciadv.adg9159" target="_blank">Science Advances</a> 
+        - 
+        <a href="https://arxiv.org/abs/2301.11226" target="_blank">ArXiv</a>
+]
         
 &nbsp;&nbsp; 
 [2] <i>A framework to generate hypergraphs with community structure</i><br/>
