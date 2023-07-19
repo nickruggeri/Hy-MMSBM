@@ -167,7 +167,7 @@ node's degree) , size sequence (i.e. the count of hyperedges for any given size)
 These need to be stored in text files, the degree sequence via `numpy.savetxt`, and the 
 size sequence in a text file specifying, for every line, the size of the hyperedges and 
 the number of the hyperedges of such size. Examples for these formats are given in 
-[./data/examples](./data/examples) at `fixed_dimension_sequence_hard` and `justic_dataset`. <br/>
+[./data/examples](./data/examples) at `fixed_dimension_sequence_hard` and `justice_dataset`. <br/>
 The command line arguments are specified as follows:
 ```python
 python main_sampling.py 
